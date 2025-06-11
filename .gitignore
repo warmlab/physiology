@@ -208,3 +208,8 @@ backend/alembic/versions/
 _fresh/
 # npm dependencies
 node_modules/
+
+# for database
+alembic.ini
+alembic/
+

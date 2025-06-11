@@ -13,3 +13,4 @@ sqlalchemy
 asyncpg
 alembic
 greenlet
+uvicorn
