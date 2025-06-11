@@ -1,0 +1,96 @@
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from .database import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    password = Column(String)
+    role = Column(String, default="customer")
+
+    def __repr__(self) -> str:
+        return self.username
+
+
+class Booking(Base):
+    __tablename__ = "bookings"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    date = Column(String)
+    time = Column(String)
+    service = Column(String)
+    user = relationship("User")
+
+
+class BodyPart(Base):
+    __tablename__ = "body_parts"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(127))
+    note: Mapped[str] = mapped_column(String, nullable=True)
+
+    # Optional: show reverse relationship
+    muscles: Mapped[list["Muscle"]] = relationship("Muscle", back_populates="body_part")
+    bony_landmarks: Mapped[list["BonyLandmark"]] = relationship("BonyLandmark", back_populates="body_part")
+
+    def __repr__(self) -> str:
+        return self.name
+
+
+class Muscle(Base):
+    __tablename__ = "muscles"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(127))
+    action: Mapped[str] = mapped_column(String, nullable=True)
+    origin: Mapped[str] = mapped_column(String, nullable=True)
+    insertion: Mapped[str] = mapped_column(String, nullable=True)
+    innovation: Mapped[str] = mapped_column(String(127), nullable=True)
+    palpation_key: Mapped[str] = mapped_column(String, nullable=True)
+    note: Mapped[str] = mapped_column(String, nullable=True)
+
+    # Add foreign key column
+    body_part_id: Mapped[int] = mapped_column(ForeignKey("body_parts.id"), nullable=True)
+
+    # Set up the relationship
+    body_part: Mapped["BodyPart"] = relationship("BodyPart", back_populates="muscles")
+
+    def __repr__(self) -> str:
+        return self.name
+
+
+class BonyLandmark(Base):
+    __tablename__ = "bony_landmarks"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(127))
+    note: Mapped[str] = mapped_column(String, nullable=True)
+
+    # Add foreign key column
+    body_part_id: Mapped[int] = mapped_column(ForeignKey("body_parts.id"), nullable=True)
+
+    # Set up the relationship
+    body_part: Mapped["BodyPart"] = relationship("BodyPart", back_populates="bony_landmarks")
+
+    def __repr__(self) -> str:
+        return self.name
+
+
+class Disease(Base):
+    __tablename__ = "disease"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(127))
+    note: Mapped[str] = mapped_column(String, nullable=True)
+
+    def __repr__(self) -> str:
+        return self.name
+
+
+class Terminology(Base):
+    __tablename__ = "terminology"
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(127), nullable=False)
+    description: Mapped[str] = mapped_column(String, nullable=True)
+    note: Mapped[str] = mapped_column(String, nullable=True)
+
+    def __repr__(self) -> str:
+        return self.name
