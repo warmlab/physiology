@@ -13,4 +13,5 @@ sqlalchemy
 asyncpg
 alembic
 greenlet
-uvicorn
+uvicorn[standard]
+gunicorn

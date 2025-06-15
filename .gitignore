@@ -213,3 +213,6 @@ node_modules/
 alembic.ini
 alembic/
 
+
+# for vscode
+.vscode

@@ -16,10 +16,9 @@ router = APIRouter(prefix="/terminologies", tags=["Terminologies"])
 
 @router.post("/", response_model=schemas.TerminologyRead)
 async def create_terminology(terminology: schemas.TerminologyCreate, db: AsyncSession = Depends(get_db)):
-    print(terminology)
-    print(terminology.model_dump())
     async with db.begin():
         db_terminology = Terminology(**terminology.model_dump())
+        db_terminology.slug = terminology.name.lower().replace(' ', '_')
         db.add(db_terminology)
         # db.commit()
     db.refresh(db_terminology)
@@ -35,11 +34,11 @@ async def read_Terminologies(db: AsyncSession = Depends(get_db)):
     return terminologies
 
 
-@router.get("/{terminology_id}", response_model=schemas.TerminologyRead)
-async def read_Terminology(terminology_id: int, db: AsyncSession = Depends(get_db)):
+@router.get("/{slug}", response_model=schemas.TerminologyRead)
+async def read_Terminology(slug: str, db: AsyncSession = Depends(get_db)):
     # terminology = await db.query(Terminology).filter(Terminology.id == terminology_id).first()
     result = await db.execute(
-        select(Terminology).filter(Terminology.id == terminology_id)
+        select(Terminology).filter(Terminology.slug == slug)
     )
     terminology = result.scalar_one_or_none()
     if not terminology:

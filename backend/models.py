@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, SmallInteger
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from .database import Base
 
@@ -27,6 +27,7 @@ class Booking(Base):
 class BodyPart(Base):
     __tablename__ = "body_parts"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    slug: Mapped[str] = mapped_column(String(32), nullable=True)
     name: Mapped[str] = mapped_column(String(127))
     note: Mapped[str] = mapped_column(String, nullable=True)
 
@@ -41,19 +42,22 @@ class BodyPart(Base):
 class Muscle(Base):
     __tablename__ = "muscles"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    slug: Mapped[str] = mapped_column(String(32), nullable=True)
     name: Mapped[str] = mapped_column(String(127))
     action: Mapped[str] = mapped_column(String, nullable=True)
     origin: Mapped[str] = mapped_column(String, nullable=True)
     insertion: Mapped[str] = mapped_column(String, nullable=True)
-    innovation: Mapped[str] = mapped_column(String(127), nullable=True)
+    innervation: Mapped[str] = mapped_column(String(127), nullable=True)
     palpation_key: Mapped[str] = mapped_column(String, nullable=True)
     note: Mapped[str] = mapped_column(String, nullable=True)
+    year: Mapped[int] = mapped_column(SmallInteger, default=1, nullable=True)
+    module: Mapped[int] = mapped_column(SmallInteger, default=1, nullable=True)
 
     # Add foreign key column
     body_part_id: Mapped[int] = mapped_column(ForeignKey("body_parts.id"), nullable=True)
 
     # Set up the relationship
-    body_part: Mapped["BodyPart"] = relationship("BodyPart", back_populates="muscles")
+    body_part: Mapped["BodyPart"] = relationship("BodyPart", back_populates="muscles", lazy="joined")
 
     def __repr__(self) -> str:
         return self.name
@@ -62,6 +66,7 @@ class Muscle(Base):
 class BonyLandmark(Base):
     __tablename__ = "bony_landmarks"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    slug: Mapped[str] = mapped_column(String(32), nullable=True)
     name: Mapped[str] = mapped_column(String(127))
     note: Mapped[str] = mapped_column(String, nullable=True)
 
@@ -88,6 +93,7 @@ class Disease(Base):
 class Terminology(Base):
     __tablename__ = "terminology"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    slug: Mapped[str] = mapped_column(String(32), nullable=True)
     name: Mapped[str] = mapped_column(String(127), nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
     note: Mapped[str] = mapped_column(String, nullable=True)
