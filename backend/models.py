@@ -94,8 +94,8 @@ class Terminology(Base):
     __tablename__ = "terminology"
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     slug: Mapped[str] = mapped_column(String(32), nullable=True)
-    name: Mapped[str] = mapped_column(String(127), nullable=False)
-    description: Mapped[str] = mapped_column(String, nullable=True)
+    term: Mapped[str] = mapped_column(String(127), nullable=False)
+    definition: Mapped[str] = mapped_column(String, nullable=True)
     note: Mapped[str] = mapped_column(String, nullable=True)
 
     def __repr__(self) -> str:

@@ -92,9 +92,9 @@ class DiseaseRead(DiseaseBase):
 
 
 class TerminologyBase(BaseModel):
-    name: str
-    slug: Optional[str] = None
-    description: Optional[str] = None
+    term: str
+    slug: str
+    definition: Optional[str] = None
     note: Optional[str] = None
 
 

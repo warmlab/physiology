@@ -17,14 +17,14 @@ export default function Home() {
 
           <div class="flex flex-col sm:flex-row gap-6">
             <a
-              href="/muscles"
+              href="/muscle/list"
               class="flex items-center gap-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl shadow transition transform hover:scale-105"
             >
               <Dumbbell class="w-5 h-5" />
               Muscles
             </a>
             <a
-              href="/terminologies"
+              href="/terminology/list"
               class="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-xl shadow transition transform hover:scale-105"
             >
               <BookOpen class="w-5 h-5" />

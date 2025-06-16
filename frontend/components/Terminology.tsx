@@ -3,8 +3,8 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 
 
 export type Terminology = {
-  name: string;
-  slug: string | null;
-  description: string | null;
+  term: string;
+  slug: string;
+  definition: string | null;
   note: string | null;
 };

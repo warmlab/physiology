@@ -2,7 +2,7 @@ import { JSX } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useState, useEffect } from "preact/hooks";
 
-import { Muscle } from "../types/muscle.tsx";
+import { Muscle } from "../types/muscle.ts";
 
 
 export function MuscleCard(muscle: Muscle) {

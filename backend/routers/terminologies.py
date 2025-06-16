@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
+# from sqlalchemy.future import select
+from sqlalchemy.sql.expression import func, select
+# from sqlalchemy.orm import selectinload
 
 #from ..models.Terminology import Terminology
 #from ..schemas.Terminology import TerminologyCreate, TerminologyRead
@@ -11,10 +12,10 @@ from ..database import get_db
 
 from ..models import Terminology
 
-router = APIRouter(prefix="/terminologies", tags=["Terminologies"])
+router = APIRouter(prefix="/terminology", tags=["Terminology"])
 
 
-@router.post("/", response_model=schemas.TerminologyRead)
+@router.post("/create", response_model=schemas.TerminologyRead)
 async def create_terminology(terminology: schemas.TerminologyCreate, db: AsyncSession = Depends(get_db)):
     async with db.begin():
         db_terminology = Terminology(**terminology.model_dump())
@@ -25,16 +26,24 @@ async def create_terminology(terminology: schemas.TerminologyCreate, db: AsyncSe
     return db_terminology
 
 
-@router.get("/", response_model=list[schemas.TerminologyRead])
-async def read_Terminologies(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(
-        select(Terminology)
-    )
-    terminologies = result.scalars().all()
-    return terminologies
+@router.get("/list", response_model=list[schemas.TerminologyRead])
+async def read_Terminologies(limit: int = -1, page: int = 1, random: bool = False, db: AsyncSession = Depends(get_db)):
+    page_size = 7  # TODO Maybe this variable comes from the page setting
+
+    if random:
+        result = await db.execute(
+            select(Terminology).order_by(func.random()).limit(limit if limit>0 else 5)
+        )
+    else:
+        page = page 
+        result = await db.execute(
+            select(Terminology).offset((page - 1) * page_size).limit(page_size)
+        )
+    terms = result.scalars().all()
+    return terms
 
 
-@router.get("/{slug}", response_model=schemas.TerminologyRead)
+@router.get("/detail/{slug}", response_model=schemas.TerminologyRead)
 async def read_Terminology(slug: str, db: AsyncSession = Depends(get_db)):
     # terminology = await db.query(Terminology).filter(Terminology.id == terminology_id).first()
     result = await db.execute(

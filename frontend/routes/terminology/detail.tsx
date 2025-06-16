@@ -1,7 +1,8 @@
 import { h } from "preact";
 import { Handlers, PageProps } from "$fresh/server.ts";
 
-import {Terminology} from "../components/Terminology.tsx"
+import { Terminology } from "../../components/Terminology.tsx"
+import { TerminologyCard } from "../../islands/terminologies.tsx";
 
 
 export const handler: Handlers<Terminology | null> = {
@@ -11,7 +12,7 @@ export const handler: Handlers<Terminology | null> = {
 
     if (!slug) return ctx.render(null);
 
-    const res = await fetch(`http://localhost:8000/terminologies/${slug}`);
+    const res = await fetch('http://localhost:8000/terminology/detail/anaplasia');
     if (!res.ok) return ctx.render(null);
 
     const data: Terminology = await res.json();
@@ -32,19 +33,6 @@ export default function TerminologyPage({ data }: PageProps<Terminology | null>)
   }
 
   return (
-    <div class="max-w-3xl mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold text-blue-800 mb-4">{data.name}</h1>
-      {data.description && (
-        <div class="mb-4">
-          <p class="text-gray-800 whitespace-pre-line">{data.description}</p>
-        </div>
-      )}
-      {data.note && (
-        <div>
-          <h2 class="font-semibold text-gray-700 mb-1">Note</h2>
-          <p class="text-gray-800 whitespace-pre-line">{data.note}</p>
-        </div>
-      )}
-    </div>
+    <TerminologyCard {...data}/>
   );
 }

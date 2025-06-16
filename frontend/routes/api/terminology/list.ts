@@ -1,6 +1,7 @@
 /** @fileoverview Fresh API route: Proxy to backend Django or FastAPI server */
 import { Handlers } from "$fresh/server.ts";
 
+
 export const handler: Handlers = {
   GET: async (req) => {
     const url = new URL(req.url);
@@ -11,9 +12,9 @@ export const handler: Handlers = {
     // 你的后端地址（开发时可以是 localhost，部署时改成实际域名）
     let backendUrl:string;
     if (random) {
-      backendUrl = `http://localhost:8000/muscle/list?limit=${limit}&random=${random}`;
+      backendUrl = `http://localhost:8000/terminology/list?limit=${limit}&random=${random}`;
     } else {
-      backendUrl = `http://localhost:8000/muscle/list?page=${page}&random=${random}`;
+      backendUrl = `http://localhost:8000/terminology/list?page=${page}&random=${random}`;
     }
 
     try {

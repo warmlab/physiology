@@ -3,7 +3,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { DATA_KEY_ATTR } from "$fresh/src/constants.ts";
 
 import { MuscleCard } from "../../islands/Muscle.tsx";
-import { Muscle } from "../../types/muscle.tsx";
+import { Muscle } from "../../types/muscle.ts";
 
 
 export const handler: Handlers<Muscle | null> = {
@@ -15,7 +15,7 @@ export const handler: Handlers<Muscle | null> = {
     }
     const blank = url.searchParams.get('blank') || "false";
 
-    const res = await fetch(`http://localhost:8000/muscles/${slug}`);
+    const res = await fetch(`http://localhost:8000/muscle/detail/${slug}`);
     if (!res.ok) {
       return ctx.render(null);
     }

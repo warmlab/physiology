@@ -216,3 +216,6 @@ alembic/
 
 # for vscode
 .vscode
+
+# for macOS
+.DS_Store
