@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 class UserCreate(BaseModel):
@@ -55,6 +55,12 @@ class MuscleRead(MuscleBase):
     class Config:
         # orm_mode = True
         from_attributes = True
+
+
+class MuscleList(BaseModel):
+    muscles: List[MuscleRead]
+    total_pages: int
+    current_page: int
 
 
 class BonyLandmarkBase(BaseModel):

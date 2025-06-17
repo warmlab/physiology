@@ -51,9 +51,9 @@ export function MuscleCard(muscle: Muscle) {
   );
 }
 
-export function MuscleItem(slug: string, name: string, year: number, module: number, blank: boolean =false) {
+export function MuscleItem(slug: string, name: string, year: number, module: number, page: number, blank: boolean =false) {
   return (
-    <a href={`/muscle/detail?slug=${slug}&blank=${blank}`}
+    <a href={`/muscle/detail?slug=${slug}&page=${page}&blank=${blank}`}
       class="p-4 rounded-xl shadow-sm bg-white hover:bg-sky-50 hover:shadow-md transition duration-200 border border-blue-100 flex flex-row items-center">
       <div class={`text-lg font-medium text-blue-800 mb-1 flex grow ${blank ? "blur-sm": ""}`}>{name}</div>
       <div class="text-blue-600 text-xs">
@@ -66,8 +66,9 @@ export function MuscleItem(slug: string, name: string, year: number, module: num
 
 export function MuscleList() {
   const [muscles, setMuscles] = useState<Muscle[]>([]);
-  const [limit, setLimit] = useState(5);
-  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(7);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1)
   const [random, setRandom] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -83,13 +84,32 @@ export function MuscleList() {
     //return new Response(JSON.stringify(data), {
     //  headers: { "Content-Type": "application/json" },
     //});
-    setMuscles(data);
+    setMuscles(data.muscles);
+    setPage(data.current_page)
+    setTotalPage(data.total_pages)
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchMuscles(page, limit, random);
-  }, [page, limit, random]);
+    const searchParams = new URLSearchParams(globalThis.location.search);
+    const currentPage = parseInt(searchParams.get("page") || "1");
+    setPage(currentPage);
+    fetchMuscles(currentPage, limit, random);
+  }, [])
+
+  //useEffect(() => {
+  //  fetchMuscles(page, limit, random);
+  //}, [page, limit, random]);
+
+  const changePage = (newPage: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", String(newPage));
+    history.pushState({}, "", `?${params.toString()}`);
+    setPage(newPage);
+    fetchMuscles(newPage, limit, random);
+    //window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
 
   return (
     <div class="p-6 max-w-screen-lg mx-auto">
@@ -109,21 +129,14 @@ export function MuscleList() {
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {muscles.map((muscle) => MuscleItem(muscle.slug, muscle.name, muscle.year, muscle.module, random))}
+        {muscles.map((muscle) => MuscleItem(muscle.slug, muscle.name, muscle.year, muscle.module, page, random))}
       </div>
 <div class="flex justify-between mt-4">
-  <button
-    class="bg-gray-200 px-4 py-2 rounded disabled:opacity-50"
-    disabled={page <= 1}
-    onClick={() => setPage(page - 1)}
-  >
+  <button class="bg-gray-200 px-4 py-2 rounded disabled:opacity-50" disabled={page <= 1} onClick={() => changePage(page - 1)}>
     ⬅️ Previous
   </button>
-  <span class="text-sm text-gray-600">Page {page}</span>
-  <button
-    class="bg-blue-500 text-white px-4 py-2 rounded"
-    onClick={() => setPage(page + 1)}
-  >
+  <span class="text-sm text-gray-600">Page {page} of {totalPage}</span>
+  <button class="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50" disabled={page >= totalPage} onClick={() => changePage(page + 1)}>
     Next ➡️
   </button>
 </div>

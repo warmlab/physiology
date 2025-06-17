@@ -6,7 +6,8 @@ export const handler: Handlers = {
     const url = new URL(req.url);
     const limit = url.searchParams.get("limit") || "5";
     const page = url.searchParams.get("page") || "1";
-    const random: boolean = url.searchParams.get("random").toLowerCase() === 'true' ? true : false;
+    const randomParam = url.searchParams.get("random") || "false";
+    const random = randomParam.toLowerCase() === "true";
 
     // 你的后端地址（开发时可以是 localhost，部署时改成实际域名）
     let backendUrl:string;

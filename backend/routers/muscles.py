@@ -11,7 +11,7 @@ from random import randint
 # from ..schemas.muscle import MuscleCreate, MuscleRead
 
 from ..models import Muscle
-from ..schemas import MuscleRead, MuscleCreate
+from ..schemas import MuscleRead, MuscleCreate, MuscleList
 from ..database import get_db
 
 router = APIRouter(prefix="/muscle", tags=["Muscle"])
@@ -27,17 +27,28 @@ def create_muscle(muscle: MuscleCreate, db: AsyncSession = Depends(get_db)):
     return db_muscle
 
 
-@router.get("/list", response_model=list[MuscleRead])
+@router.get("/list", response_model=MuscleList)
 async def read_muscles(limit: int = -1, page: int = 1, random: bool = False, db: AsyncSession = Depends(get_db)):
     page_size = 7  # TODO Maybe this variable comes from the page setting
+    # Get total count
+    total_query = await db.execute(select(func.count()).select_from(Muscle))
+    total_count = total_query.scalar()
+    total_pages = (total_count + page_size - 1) // page_size  # Ceiling division
 
     if random:
         result = await db.execute(
-            select(Muscle).options(selectinload(Muscle.body_part)).order_by(func.random()).limit(limit if limit>0 else 5)
+            select(Muscle)
+            .options(selectinload(Muscle.body_part))
+            .order_by(func.random())
+            .limit(limit if limit > 0 else page_size)
         )
     else:
         result = await db.execute(
-            select(Muscle).options(selectinload(Muscle.body_part)).order_by(Muscle.id).offset((page - 1) * page_size).limit(page_size)
+            select(Muscle)
+            .options(selectinload(Muscle.body_part))
+            .order_by(Muscle.id)
+            .offset((page - 1) * page_size)
+            .limit(page_size)
         )
     # if limit < 0:
     #     result = await db.execute(
@@ -48,7 +59,11 @@ async def read_muscles(limit: int = -1, page: int = 1, random: bool = False, db:
     #         select(Muscle).options(selectinload(Muscle.body_part)).limit(limit=limit)
     #     )
     muscles = result.scalars().all()
-    return muscles
+    return {
+        "muscles": muscles,
+        "total_pages": total_pages,
+        "current_page": page,
+    }
 
 
 @router.get("/detail/{slug}", response_model=MuscleRead)
