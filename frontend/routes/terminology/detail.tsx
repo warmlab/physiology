@@ -2,7 +2,7 @@ import { h } from "preact";
 import { Handlers, PageProps } from "$fresh/server.ts";
 
 import { Terminology } from "../../components/Terminology.tsx"
-import { TerminologyCard } from "../../islands/terminologies.tsx";
+import { TerminologyCard } from "../../islands/Terminologies.tsx";
 
 
 export const handler: Handlers<Terminology | null> = {

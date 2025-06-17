@@ -67,17 +67,18 @@ export function MuscleItem(slug: string, name: string, year: number, module: num
 export function MuscleList() {
   const [muscles, setMuscles] = useState<Muscle[]>([]);
   const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1)
   const [random, setRandom] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const fetchMuscles = async (count: number, random: boolean = false) => {
+  const fetchMuscles = async (page: number, limit: number, random: boolean = false) => {
     setLoading(true);
     // const res = await fetch(`/muscles?limit=${count}`);
     // const data = await res.json();
     // setMuscles(data);
 
     //const res = await fetch(`http://localhost:8000/muscles/?limit=${count}&random=${random}`);
-    const res = await fetch(`/api/muscle/list?limit=${count}&random=${random}`);
+    const res = await fetch(`/api/muscle/list?page=${page}&limit=${limit}&random=${random}`);
     const data = await res.json();
     //return new Response(JSON.stringify(data), {
     //  headers: { "Content-Type": "application/json" },
@@ -87,8 +88,8 @@ export function MuscleList() {
   };
 
   useEffect(() => {
-    fetchMuscles(limit, random);
-  }, [limit, random]);
+    fetchMuscles(page, limit, random);
+  }, [page, limit, random]);
 
   return (
     <div class="p-6 max-w-screen-lg mx-auto">
@@ -96,13 +97,13 @@ export function MuscleList() {
         <h1 class="text-3xl font-bold text-blue-800 grow">Muscles Study</h1>
       </div>
       <div class="flex flex-row justify-between mb-2">
-        <button type="button" onClick={(e) => { setRandom(!random); fetchMuscles(limit, random)}} class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded m-1">
+        <button type="button" onClick={(e) => { setRandom(!random); fetchMuscles(page, limit, random)}} class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded m-1">
           {random ? "Test" : "Study"}
         </button>
         {random && (<div>
           <input type="number" value={limit} onInput={(e) => setLimit(Number((e.target as HTMLInputElement).value))}
             class="border px-1 py-2 rounded w-10 m-1" min="1" />
-          <button type="button" onClick={() => fetchMuscles(limit, random)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 m-1 rounded">Shuffle Muscles</button>
+          <button type="button" onClick={() => fetchMuscles(page, limit, random)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-2 m-1 rounded">Shuffle Muscles</button>
           {/*<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">Get Muscles</button> */}
         </div>)}
       </div>
@@ -110,6 +111,22 @@ export function MuscleList() {
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {muscles.map((muscle) => MuscleItem(muscle.slug, muscle.name, muscle.year, muscle.module, random))}
       </div>
+<div class="flex justify-between mt-4">
+  <button
+    class="bg-gray-200 px-4 py-2 rounded disabled:opacity-50"
+    disabled={page <= 1}
+    onClick={() => setPage(page - 1)}
+  >
+    ⬅️ Previous
+  </button>
+  <span class="text-sm text-gray-600">Page {page}</span>
+  <button
+    class="bg-blue-500 text-white px-4 py-2 rounded"
+    onClick={() => setPage(page + 1)}
+  >
+    Next ➡️
+  </button>
+</div>
     </div>
   );
 }

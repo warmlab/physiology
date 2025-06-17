@@ -37,7 +37,7 @@ async def read_muscles(limit: int = -1, page: int = 1, random: bool = False, db:
         )
     else:
         result = await db.execute(
-            select(Muscle).options(selectinload(Muscle.body_part)).offset((page - 1) * page_size).limit(page_size)
+            select(Muscle).options(selectinload(Muscle.body_part)).order_by(Muscle.id).offset((page - 1) * page_size).limit(page_size)
         )
     # if limit < 0:
     #     result = await db.execute(
