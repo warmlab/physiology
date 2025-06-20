@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { DATA_KEY_ATTR } from "$fresh/src/constants.ts";
+import { Head } from "$fresh/runtime.ts";
 
 import { MuscleCard } from "../../islands/Muscle.tsx";
 import { Muscle } from "../../types/muscle.ts";
@@ -29,13 +30,23 @@ export const handler: Handlers<Muscle | null> = {
 export default function MuscleDetailPage({ data }: PageProps<Muscle | null>) {
   if (!data) {
     return (
+      <>
+      <Head>
+        <title>Muscle Not Found</title>
+      </Head>
       <div class="p-6 max-w-screen-md mx-auto">
         <h1 class="text-red-500 font-bold">Muscle not found or no ID provided</h1>
       </div>
+      </>
     );
   }
 
   return (
-    <MuscleCard {...data} />
+    <>
+      <Head>
+        <title>{data.name}</title>
+      </Head>
+      <MuscleCard {...data} />
+    </>
   );
 }
