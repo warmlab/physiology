@@ -3,6 +3,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
 
 import { MuscleList } from "../../islands/Muscle.tsx";
+import Navigator from "../../islands/Navigator.tsx"
 {/*
 import { Muscle } from "../types/muscle.tsx";
 
@@ -20,7 +21,10 @@ export default function MusclesPage() {
     <>
     <Head>
       <title>Muscles Study</title>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:wght@400;600&display=swap"
+          rel="stylesheet" />
     </Head>
+    <Navigator />
     <MuscleList />
     </>
   );

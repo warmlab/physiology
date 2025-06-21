@@ -4,6 +4,7 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $about from "./routes/about.tsx";
 import * as $api_muscle_detail from "./routes/api/muscle/detail.ts";
 import * as $api_muscle_list from "./routes/api/muscle/list.ts";
 import * as $api_terminology_detail from "./routes/api/terminology/detail.ts";
@@ -16,6 +17,7 @@ import * as $terminology_list from "./routes/terminology/list.tsx";
 import * as $BookingForm from "./islands/BookingForm.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Muscle from "./islands/Muscle.tsx";
+import * as $Navigator from "./islands/Navigator.tsx";
 import * as $Terminologies from "./islands/Terminologies.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
@@ -23,6 +25,7 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/about.tsx": $about,
     "./routes/api/muscle/detail.ts": $api_muscle_detail,
     "./routes/api/muscle/list.ts": $api_muscle_list,
     "./routes/api/terminology/detail.ts": $api_terminology_detail,
@@ -37,6 +40,7 @@ const manifest = {
     "./islands/BookingForm.tsx": $BookingForm,
     "./islands/Counter.tsx": $Counter,
     "./islands/Muscle.tsx": $Muscle,
+    "./islands/Navigator.tsx": $Navigator,
     "./islands/Terminologies.tsx": $Terminologies,
   },
   baseUrl: import.meta.url,

@@ -10,6 +10,10 @@ export default {
         primary: "#38bdf8",
         accent: "#f472b6",
       },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Lora', 'serif'],
+      },
     },
   },
 } satisfies Config;

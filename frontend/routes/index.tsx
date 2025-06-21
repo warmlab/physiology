@@ -1,7 +1,10 @@
 import { h } from "preact";
 import { Head } from "$fresh/runtime.ts";
-import Foot  from "../components/Foot.tsx";
+
 import { Dumbbell, BookOpen } from "lucide-preact"
+
+import Foot  from "../components/Foot.tsx";
+import Navigator from "../islands/Navigator.tsx";
 
 export default function Home() {
   return (
@@ -9,6 +12,7 @@ export default function Home() {
       <Head>
         <title>Anatomy & Physiology</title>
       </Head>
+      <Navigator />
       <div class="min-h-screen flex flex-col bg-gray-100">
         <main class="flex-grow flex flex-col items-center justify-center p-4">
           <h2 class="text-3xl font-bold mb-8 text-blue-800 text-center leading-snug">

@@ -9,10 +9,10 @@ import { Terminology } from "../components/Terminology.tsx";
 export function TerminologyItem(slug: string, term: string, year: number = 1, module: number = 1, blank: boolean =false) {
   return (
     <a href={`/terminology/detail?slug=${slug}&blank=${blank}`}
-      class="p-4 rounded-xl shadow-sm bg-white hover:bg-sky-50 hover:shadow-md transition duration-200 border border-blue-100 flex flex-row items-center">
+      class="font-serif p-4 rounded-xl shadow-sm bg-white hover:bg-sky-50 hover:shadow-md transition duration-200 border border-blue-100 flex flex-row items-center">
       <div class={`text-lg font-medium text-blue-800 mb-1 flex grow ${blank ? "blur-sm": ""}`}>{term}</div>
       <div class="text-blue-600 text-xs">
-        <span class="inline-block">🔖 Y{year}M{module}</span>
+        <span class="inline-block">🔖</span>
       </div>
     </a>
   );
@@ -48,9 +48,9 @@ export function TerminologyList() {
   return (
     <div class="max-w-3xl mx-auto px-4 py-8">
       <div class="flex flex-row items-center border-b-2 border-blue-100 mb-2">
-        <h1 class="text-3xl font-bold text-blue-800">Medical Terminologies</h1>
+        <h1 class="text-3xl font-bold text-blue-800">Medical Terminology</h1>
       </div>
-      <div class="grid sm:grid-cols-2 gap-4">
+      <div class="grid sm:grid-cols-2 gap-4 font-serif">
         {/*{terminologies.map((item) => (
           <a href={`terminology/detail?slug=${item.slug}`}
             class="flex p-4 rounded-xl shadow-sm bg-white hover:bg-green-50 hover:shadow-md transition duration-200 border border-gray-200">
@@ -65,7 +65,7 @@ export function TerminologyList() {
 
 export function TerminologyCard(terminology: Terminology) {
   return (
-    <div class="rounded-lg p-4 bg-gray-100 h-screen">
+    <div class="font-serif rounded-lg p-4 bg-gray-100 h-screen">
       {/* <img class="rounded-lg w-full h-48 object-cover" src={img} alt={name} /> */}
       <div class="mt-1">
         <div class="mb-8 font-bold text-blue-800 text-3xl p-2 border-b-2 border-blue-100">{terminology.term}</div>
