@@ -17,8 +17,8 @@ export default function Navigator() {
 
         {/* Desktop Menu */}
         <nav class="hidden sm:flex gap-6 text-sm sm:text-base">
-          <a href="/muscles" class="text-gray-700 hover:text-blue-600 transition">Muscles</a>
-          <a href="/terminologies" class="text-gray-700 hover:text-blue-600 transition">Terminology</a>
+          <a href="/muscle/list" class="text-gray-700 hover:text-blue-600 transition">Muscles</a>
+          <a href="/terminology/list" class="text-gray-700 hover:text-blue-600 transition">Terminology</a>
           <a href="/about" class="text-gray-700 hover:text-blue-600 transition">About</a>
         </nav>
 
