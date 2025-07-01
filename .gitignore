@@ -219,3 +219,6 @@ alembic/
 
 # for macOS
 .DS_Store
+
+# for vi
+*.swp

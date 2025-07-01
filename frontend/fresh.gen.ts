@@ -5,15 +5,19 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $about from "./routes/about.tsx";
+import * as $api_auth_google from "./routes/api/auth/google.ts";
 import * as $api_muscle_detail from "./routes/api/muscle/detail.ts";
 import * as $api_muscle_list from "./routes/api/muscle/list.ts";
 import * as $api_terminology_detail from "./routes/api/terminology/detail.ts";
 import * as $api_terminology_list from "./routes/api/terminology/list.ts";
+import * as $auth from "./routes/auth.tsx";
+import * as $auth_google_callback from "./routes/auth/google/callback.ts";
 import * as $index from "./routes/index.tsx";
 import * as $muscle_detail from "./routes/muscle/detail.tsx";
 import * as $muscle_list from "./routes/muscle/list.tsx";
 import * as $terminology_detail from "./routes/terminology/detail.tsx";
 import * as $terminology_list from "./routes/terminology/list.tsx";
+import * as $Auth from "./islands/Auth.tsx";
 import * as $BookingForm from "./islands/BookingForm.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Muscle from "./islands/Muscle.tsx";
@@ -26,10 +30,13 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/about.tsx": $about,
+    "./routes/api/auth/google.ts": $api_auth_google,
     "./routes/api/muscle/detail.ts": $api_muscle_detail,
     "./routes/api/muscle/list.ts": $api_muscle_list,
     "./routes/api/terminology/detail.ts": $api_terminology_detail,
     "./routes/api/terminology/list.ts": $api_terminology_list,
+    "./routes/auth.tsx": $auth,
+    "./routes/auth/google/callback.ts": $auth_google_callback,
     "./routes/index.tsx": $index,
     "./routes/muscle/detail.tsx": $muscle_detail,
     "./routes/muscle/list.tsx": $muscle_list,
@@ -37,6 +44,7 @@ const manifest = {
     "./routes/terminology/list.tsx": $terminology_list,
   },
   islands: {
+    "./islands/Auth.tsx": $Auth,
     "./islands/BookingForm.tsx": $BookingForm,
     "./islands/Counter.tsx": $Counter,
     "./islands/Muscle.tsx": $Muscle,

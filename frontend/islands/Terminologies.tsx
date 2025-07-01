@@ -65,7 +65,7 @@ export function TerminologyList() {
 
 export function TerminologyCard(terminology: Terminology) {
   return (
-    <div class="font-serif rounded-lg p-4 bg-gray-100 h-screen">
+    <div class="font-serif rounded-lg p-4 h-screen">
       {/* <img class="rounded-lg w-full h-48 object-cover" src={img} alt={name} /> */}
       <div class="mt-1">
         <div class="mb-8 font-bold text-blue-800 text-3xl p-2 border-b-2 border-blue-100">{terminology.term}</div>

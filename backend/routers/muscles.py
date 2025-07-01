@@ -20,7 +20,8 @@ router = APIRouter(prefix="/muscle", tags=["Muscle"])
 @router.post("/create", response_model=MuscleRead)
 def create_muscle(muscle: MuscleCreate, db: AsyncSession = Depends(get_db)):
     db_muscle = Muscle(**muscle.model_dump())
-    db_muscle.slug = uuid4().hex
+    # db_muscle.slug = uuid4().hex
+    db_muscle.slug = db_muscle.name.lower().replace(' ', '-')
     db.add(db_muscle)
     db.commit()
     db.refresh(db_muscle)

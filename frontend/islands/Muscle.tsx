@@ -16,7 +16,7 @@ export function MuscleCard(muscle: Muscle) {
     muscle.blank && !showAll && muscle.reminder !== field;
 
   return (
-    <div class="font-serif rounded-lg p-4 bg-gray-100">
+    <div class="font-serif rounded-lg p-4">
       {/* <img class="rounded-lg w-full h-48 object-cover" src={img} alt={name} /> */}
       <div class="my-1">
         <div class={`flex items-center mb-8 font-bold text-blue-800 text-3xl p-2 border-b-2 border-blue-100 ${ isBlurred("name") ? "blur-md" : ""}`}>

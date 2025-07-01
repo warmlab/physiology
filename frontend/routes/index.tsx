@@ -13,7 +13,7 @@ export default function Home() {
         <title>Anatomy & Physiology</title>
       </Head>
       <Navigator />
-      <div class="min-h-screen flex flex-col bg-gray-100">
+      <div class="min-h-screen flex flex-col">
         <main class="flex-grow flex flex-col items-center justify-center p-4">
           <h2 class="text-3xl font-bold mb-8 text-blue-800 text-center leading-snug">
             Principles of <br />Anatomy & Physiology

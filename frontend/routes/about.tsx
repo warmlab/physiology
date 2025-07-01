@@ -12,7 +12,7 @@ export default function AboutPage() {
         <title>About Me</title>
       </Head>
       <Navigator />
-      <main class="text-gray-800 px-4 py-2 max-w-3xl mx-auto">
+      <main class="text-gray-800 px-4 py-2 max-w-3xl mx-auto bg-white rounded mt-6">
         <h1 class="text-4xl font-bold text-blue-700 mb-6">About This Project</h1>
 
         <p class="text-lg mb-4">
@@ -54,7 +54,7 @@ export default function AboutPage() {
         </p>
 
         <p class="text-sm text-gray-600">
-          Version: <code class="bg-gray-100 px-1 py-0.5 rounded">v1.0</code> | Last updated: <code class="bg-gray-100 px-1 py-0.5 rounded">June 2025</code>
+          Version: <code class="bg-blue-100 px-1 py-0.5 rounded">v1.0</code> | Last updated: <code class="bg-blue-100 px-1 py-0.5 rounded">June 2025</code>
         </p>
       </main>
       <Foot />

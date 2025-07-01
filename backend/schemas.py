@@ -1,16 +1,38 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import Optional, List
 
+from .enums import UserRole
 
-class UserCreate(BaseModel):
+
+class UserBase(BaseModel):
     username: str
+    email: EmailStr
+    role: Optional[UserRole] = UserRole.CUSTOMER
+
+
+class UserCreate(UserBase):
+    password: str  # plain password for signup
+
+
+class UserRead(UserBase):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserInDB(UserBase):
+    hashed_password: str
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
     password: str
 
 
 class Token(BaseModel):
     access_token: str
-    token_type: str
-    role: str
+    token_type: str = "bearer"
+    user: UserRead
 
 
 class BodyPartBase(BaseModel):
@@ -25,9 +47,7 @@ class BodyPartCreate(BodyPartBase):
 class BodyPartRead(BodyPartBase):
     id: int
 
-    class Config:
-        # orm_mode = True
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MuscleBase(BaseModel):
@@ -52,9 +72,7 @@ class MuscleRead(MuscleBase):
     body_part: Optional[BodyPartRead] = None  # Full related object
     reminder: Optional[str] = None
 
-    class Config:
-        # orm_mode = True
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MuscleList(BaseModel):
@@ -75,9 +93,7 @@ class BonyLandmarkCreate(BonyLandmarkBase):
 class BonyLandmarkRead(BonyLandmarkBase):
     id: int
 
-    class Config:
-        # orm_mode = True
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class DiseaseBase(BaseModel):
@@ -92,9 +108,7 @@ class DiseaseCreate(DiseaseBase):
 class DiseaseRead(DiseaseBase):
     id: int
 
-    class Config:
-        # orm_mode = True
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TerminologyBase(BaseModel):
@@ -111,6 +125,4 @@ class TerminologyCreate(TerminologyBase):
 class TerminologyRead(TerminologyBase):
     id: int
 
-    class Config:
-        # orm_mode = True
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
