@@ -1,7 +1,7 @@
-/** islands/AuthForm.tsx */
-import { useState } from "preact/hooks";
+/** islands/Auth.tsx */
+import { useState, useEffect } from "preact/hooks";
 
-export default function AuthForm() {
+export function AuthLogin() {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [message, setMessage] = useState("");
@@ -51,5 +51,44 @@ export default function AuthForm() {
           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Sign in with Google</a>
       </div>
     </div>
+  );
+}
+
+export function AuthSuccess() {
+  const [userEmail, setUserEmail] = useState("");
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const url = new URL(location.href);
+    const token = url.searchParams.get("token");
+    const userStr = url.searchParams.get("user");
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+	setUserEmail(user.email || ""); // Update local state
+	setUsername(user.username || ""); // Update local state
+        setTimeout(() => {
+          globalThis.location.href = "/";
+        }, 2000);
+
+      } catch (_) {
+        alert("Login parsing failed");
+      }
+    } else {
+      alert("Missing token or user info");
+    }
+  }, []);
+
+  return (
+        <div class="bg-white p-8 rounded shadow-md max-w-md text-center">
+          <h1 class="text-2xl font-bold text-green-700 mb-2">✅ Login Successful</h1>
+          <p class="text-gray-700 mb-4">
+            Welcome back, <span class="font-semibold">{username}({userEmail})</span>!
+          </p>
+          <a href="/" class="text-blue-600 hover:underline">Go to Home</a>
+        </div>
   );
 }

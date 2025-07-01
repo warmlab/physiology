@@ -49,6 +49,42 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
     token = create_access_token(token_data)
     return Token(access_token=token, user=UserRead.model_validate(user))
 
+
+@router.post('/google')
+async def google_login(data: dict, db: AsyncSession = Depends(get_db)):
+    print("google", data)
+    email = data.get("email")
+    name = data.get("name", "")
+    avatar = data.get("picture", "")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="Missing email from Google")
+
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalar_one_or_none()
+
+    if not user:
+        user = User(
+            username=email.split("@")[0],
+            email=email,
+            hashed_password="",  # Not used
+            role="CUSTOMER"
+        )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+
+    token = create_access_token({"sub": str(user.id), "username": user.username, "role": user.role})
+    return {
+        "access_token": token,
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "avatar": avatar  # not stored in DB, but returned for frontend
+        }
+    }
+
 # @router.post("/token")
 # def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
 #     user = authenticate_user(db, form_data.username, form_data.password)

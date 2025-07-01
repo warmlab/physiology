@@ -12,6 +12,7 @@ import * as $api_terminology_detail from "./routes/api/terminology/detail.ts";
 import * as $api_terminology_list from "./routes/api/terminology/list.ts";
 import * as $auth from "./routes/auth.tsx";
 import * as $auth_google_callback from "./routes/auth/google/callback.ts";
+import * as $auth_success from "./routes/auth/success.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $muscle_detail from "./routes/muscle/detail.tsx";
 import * as $muscle_list from "./routes/muscle/list.tsx";
@@ -37,6 +38,7 @@ const manifest = {
     "./routes/api/terminology/list.ts": $api_terminology_list,
     "./routes/auth.tsx": $auth,
     "./routes/auth/google/callback.ts": $auth_google_callback,
+    "./routes/auth/success.tsx": $auth_success,
     "./routes/index.tsx": $index,
     "./routes/muscle/detail.tsx": $muscle_detail,
     "./routes/muscle/list.tsx": $muscle_list,

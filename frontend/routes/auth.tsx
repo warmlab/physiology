@@ -2,7 +2,7 @@
 import { h } from "preact";
 import { Head } from "$fresh/runtime.ts";
 
-import AuthForm from "../islands/Auth.tsx";
+import { AuthLogin } from "../islands/Auth.tsx";
 import Navigator from "../islands/Navigator.tsx"
 
 export default function AuthPage() {
@@ -15,7 +15,7 @@ export default function AuthPage() {
     </Head>
     <Navigator />
     <div class="min-h-screen">
-      <AuthForm />
+      <AuthLogin />
     </div></>
   );
 }
