@@ -66,7 +66,9 @@ export default function Navigator() {
               </button>
               {dropdownOpen && (
                 <div class="absolute right-0 mt-2 bg-white border shadow rounded w-40 z-10">
-                  <a href="/profile" class={`${desktopLink} ${isActive("/profile")}`}>Profile</a>
+                  {/*<a href="/profile" class={`${desktopLink} ${isActive("/profile")}`}>Profile</a>*/}
+                  <a href="/my/muscles" class={`${desktopLink} ${isActive("/my/muscles")}`}>My Muscles</a>
+                  <a href="/my/terminologies" class={`${desktopLink} ${isActive("/my/terminologies")}`}>My Terminology</a>
                   <button type="button" onClick={logout}
                     class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                     Logout
@@ -94,7 +96,9 @@ export default function Navigator() {
             <a href="/auth" class={`${mobileLink} ${isActive("/auth")}`}>Login</a>
           ) : (
             <>
-              <a href="/profile" class={`${mobileLink} ${isActive("/profile")}`}>👤 {user.name}</a>
+              {/*<a href="/profile" class={`${mobileLink} ${isActive("/profile")}`}>👤 {user.name}</a> */}
+              <a href="/my/muscles" class={`${mobileLink} ${isActive("/my/muscles")}`}>My Muscles</a>
+              <a href="/my/terminology" class={`${mobileLink} ${isActive("/my/terminology")}`}>My Terminology</a>
               <button type="button" onClick={logout} class="w-full text-left py-2 text-red-600 hover:text-red-800">Logout</button>
             </>
           )}

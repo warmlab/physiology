@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import auth, bookings
-from .routers import muscles, bony_landmarks, diseases, terminologies
+from .routers import muscles, bony_landmarks, diseases, terminologies, favorite
 
 app = FastAPI()
 
@@ -22,3 +22,4 @@ app.include_router(bony_landmarks.router)
 app.include_router(muscles.router)
 app.include_router(diseases.router)
 app.include_router(terminologies.router)
+app.include_router(favorite.router)

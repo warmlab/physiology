@@ -1,9 +1,11 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, SmallInteger
+from datetime import datetime
+
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, SmallInteger, UniqueConstraint
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from .database import Base
-from .enums import UserRole
+# from .enums import UserRole
 
 
 class User(Base):
@@ -13,10 +15,30 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
     email: Mapped[str] = mapped_column(String(128), unique=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
-    role: Mapped[UserRole] = mapped_column(SQLEnum(UserRole, name="userrole"), default=UserRole.CUSTOMER)
+    role: Mapped[str] = mapped_column(String(16), default='CUSTOMER')
+    add_time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    favorites = relationship("UserFavorite", back_populates="user", cascade="all, delete")
 
     def __repr__(self) -> str:
         return self.username
+
+
+class UserFavorite(Base):
+    __tablename__ = "user_favorites"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    item_type: Mapped[str] = mapped_column(String(31))  # 'muscle' or 'terminology'
+    item_id: Mapped[int] = mapped_column(Integer)
+    add_time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "item_type", "item_id", name="unique_user_favorite"),
+    )
+
+    # Optional relationship
+    user = relationship("User", back_populates="favorites")
 
 
 class Booking(Base):

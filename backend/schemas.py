@@ -1,13 +1,13 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
-from typing import Optional, List
+from datetime import datetime
 
-from .enums import UserRole
+from pydantic import BaseModel, EmailStr, ConfigDict
+from typing import Optional, List, Literal
 
 
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-    role: Optional[UserRole] = UserRole.CUSTOMER
+    role: Literal["admin", "staff", "customer"]
 
 
 class UserCreate(UserBase):
@@ -35,6 +35,23 @@ class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserRead
+
+
+class FavoriteBase(BaseModel):
+    item_type: Literal["muscle", "terminology"]
+    item_id: int
+    add_time: datetime
+
+
+class FavoriteCreate(FavoriteBase):
+    pass
+
+
+class FavoriteRead(FavoriteBase):
+    id: int
+    user_id: int
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BodyPartBase(BaseModel):

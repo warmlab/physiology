@@ -21,6 +21,7 @@ import * as $terminology_list from "./routes/terminology/list.tsx";
 import * as $Auth from "./islands/Auth.tsx";
 import * as $BookingForm from "./islands/BookingForm.tsx";
 import * as $Counter from "./islands/Counter.tsx";
+import * as $FavoriteButton from "./islands/FavoriteButton.tsx";
 import * as $Muscle from "./islands/Muscle.tsx";
 import * as $Navigator from "./islands/Navigator.tsx";
 import * as $Terminologies from "./islands/Terminologies.tsx";
@@ -49,6 +50,7 @@ const manifest = {
     "./islands/Auth.tsx": $Auth,
     "./islands/BookingForm.tsx": $BookingForm,
     "./islands/Counter.tsx": $Counter,
+    "./islands/FavoriteButton.tsx": $FavoriteButton,
     "./islands/Muscle.tsx": $Muscle,
     "./islands/Navigator.tsx": $Navigator,
     "./islands/Terminologies.tsx": $Terminologies,

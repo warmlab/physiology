@@ -5,6 +5,7 @@ import { useState, useEffect } from "preact/hooks";
 import { ChevronRight, ChevronLeft, Book, Shuffle } from "lucide-preact"
 
 import { Muscle } from "../types/muscle.ts";
+import FavoriteButton from "./FavoriteButton.tsx";
 
 
 export function MuscleCard(muscle: Muscle) {
@@ -19,11 +20,12 @@ export function MuscleCard(muscle: Muscle) {
     <div class="font-serif rounded-lg p-4">
       {/* <img class="rounded-lg w-full h-48 object-cover" src={img} alt={name} /> */}
       <div class="my-1">
-        <div class={`flex items-center mb-8 font-bold text-blue-800 text-3xl p-2 border-b-2 border-blue-100 ${ isBlurred("name") ? "blur-md" : ""}`}>
+        <div class={`flex items-center mb-8 font-bold text-blue-800 text-3xl p-2 border-b-2 border-blue-100 justify-between ${ isBlurred("name") ? "blur-md" : ""}`}>
           <button onClick={() => history.back()} class="text-white bg-blue-500 mr-2 hover:bg-blue-700 text-lg rounded-lg">
             <ChevronLeft class="w-9 h-9" />
           </button>
           <span class="mt-2">{muscle.name}</span>
+          <FavoriteButton slug={muscle.slug} type="muscle" size="large"/>
         </div>
         <div class="mb-6 border-solid border-blue-100 border-2 rounded-lg mt-4 bg-white">
             <span class="text-lg rounded-md font-semibold bg-blue-200 p-2 text-blue-700 ml-2 relative -top-3" style="">Action</span>
@@ -65,6 +67,9 @@ export function MuscleItem(slug: string, name: string, year: number, module: num
       <div class={`text-lg font-medium text-blue-800 mb-1 flex grow font-serif ${blank ? "blur-sm": ""}`}>{name}</div>
       <div class="text-blue-600 text-xs">
         <span class="inline-block font-serif">🔖 Y{year}M{module}</span>
+      </div>
+      <div class="ml-2 text-xs">
+        <FavoriteButton slug={slug} type="muscle" size="small" />
       </div>
     </a>
   );
