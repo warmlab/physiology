@@ -61,7 +61,7 @@ export default function Navigator() {
           ) : (
             <div class="relative ml-4">
               <button onClick={() => setDropdownOpen(!dropdownOpen)} class="flex items-center space-x-2 focus:outline-none">
-                <img src={user.avatar || "/default-avatar.png"} alt="avatar" class="w-8 h-8 rounded-full border" />
+                <img src={user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`} alt="avatar" class="w-8 h-8 rounded-full border" />
                 <span class="text-gray-700">{user.name}</span>
               </button>
               {dropdownOpen && (

@@ -43,6 +43,11 @@ export function MuscleCard(muscle: Muscle) {
             <span class="text-lg rounded-md font-semibold bg-blue-200 p-2 text-blue-700 ml-2 relative -top-3">Innervation</span>
             <div class={`text-lg text-gray-700 p-2 pt-0 ${ muscle.blank && !showAll ? "blur-md" : ""}`} style="white-space: pre-line;">{muscle.innervation}</div>
         </div>
+        {muscle.note ? (
+        <div class="mb-6 border-solid border-blue-100 border-2 rounded-lg mt-4 bg-white">
+            <span class="text-lg rounded-md font-semibold bg-blue-200 p-2 text-blue-700 ml-2 relative -top-3">Extra Information</span>
+            <div class={`text-lg text-gray-700 p-2 pt-0 ${ muscle.blank && !showAll ? "blur-md" : ""}`} style="white-space: pre-line;">{muscle.note}</div>
+        </div>):''}
         <div class="mb-6 border-solid border-blue-100 border-2 rounded-lg mt-4 bg-white">
             <span class="text-lg rounded-md font-semibold bg-blue-200 p-2 text-blue-700 ml-2 relative -top-3">Palpation Key</span>
             <div class={`text-lg text-gray-700 p-2 pt-0 ${ muscle.blank && !showAll ? "blur-md" : ""}`} style="white-space: pre-line;">{muscle.palpation_key}</div>
@@ -62,16 +67,18 @@ export function MuscleCard(muscle: Muscle) {
 
 export function MuscleItem(slug: string, name: string, year: number, module: number, page: number, blank: boolean =false) {
   return (
-    <a href={`/muscle/detail?slug=${slug}&page=${page}&blank=${blank}`}
-      class="p-4 rounded-xl shadow-sm bg-white hover:bg-sky-50 hover:shadow-md transition duration-200 border border-blue-100 flex flex-row items-center">
-      <div class={`text-lg font-medium text-blue-800 mb-1 flex grow font-serif ${blank ? "blur-sm": ""}`}>{name}</div>
-      <div class="text-blue-600 text-xs">
-        <span class="inline-block font-serif">🔖 Y{year}M{module}</span>
-      </div>
-      <div class="ml-2 text-xs">
+    <div class="p-4 rounded-xl shadow-sm bg-white hover:bg-sky-50 hover:shadow-md transition duration-200 border border-blue-100 flex flex-row items-center font-serif">
+      <div class="mr-2 text-xs">
         <FavoriteButton slug={slug} type="muscle" size="small" />
       </div>
-    </a>
+      <a href={`/muscle/detail?slug=${slug}&page=${page}&blank=${blank}`}
+        class="flex grow flex-row">
+        <div class={`text-lg font-medium text-blue-800 mb-1 flex grow ${blank ? "blur-sm": ""}`}>{name}</div>
+        <div class="text-blue-600 text-xs">
+          <span class="inline-block">🔖 Y{year}M{module}</span>
+        </div>
+      </a>
+    </div>
   );
 }
 

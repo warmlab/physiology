@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, SmallInteger, UniqueConstraint
-from sqlalchemy import Enum as SQLEnum
+# from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from .database import Base
@@ -19,6 +19,8 @@ class User(Base):
     add_time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
 
     favorites = relationship("UserFavorite", back_populates="user", cascade="all, delete")
+    muscles: Mapped[list["UserMuscle"]] = relationship("UserMuscle", back_populates="user", cascade="all, delete")
+    terminology: Mapped[list["UserTerminology"]] = relationship("UserTerminology", back_populates="user", cascade="all, delete")
 
     def __repr__(self) -> str:
         return self.username
@@ -127,3 +129,35 @@ class Terminology(Base):
 
     def __repr__(self) -> str:
         return self.name
+
+
+class UserMuscle(Base):
+    __tablename__ = 'user_muscles'
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    muscle_id: Mapped[int] = mapped_column(ForeignKey("muscles.id", ondelete="CASCADE"))
+    add_time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "muscle_id", name="unique_user_muscle"),
+    )
+
+    # Optional relationship
+    user = relationship("User", back_populates="muscles")
+
+
+class UserTerminology(Base):
+    __tablename__ = 'user_terminology'
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    terminology_id: Mapped[int] = mapped_column(ForeignKey("terminology.id", ondelete="CASCADE"))
+    add_time: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+
+    __table_args__ = (
+        UniqueConstraint("user_id", "terminology_id", name="unique_user_terminology"),
+    )
+
+    # Optional relationship
+    user: Mapped['User'] = relationship("User", back_populates="terminology")

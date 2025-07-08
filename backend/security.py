@@ -19,6 +19,7 @@ def create_access_token(data: dict):
     token = jwt.encode(header, to_encode, SECRET_KEY)
     return token.decode("utf-8")
 
+
 def decode_token(token: str):
     return jwt.decode(token, SECRET_KEY)
 

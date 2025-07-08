@@ -7,7 +7,7 @@ from typing import Optional, List, Literal
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-    role: Literal["admin", "staff", "customer"]
+    role: Literal["admin", "staff", "customer"] = 'customer'
 
 
 class UserCreate(UserBase):
@@ -17,9 +17,7 @@ class UserCreate(UserBase):
 class UserRead(UserBase):
     id: int
 
-    model_config = ConfigDict(
-            from_attributes=True,
-            use_enum_values=True)
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserInDB(UserBase):
@@ -145,3 +143,27 @@ class TerminologyRead(TerminologyBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class UserMuscleCreate(BaseModel):
+    muscle_id: int
+
+
+class UserMuscleRead(BaseModel):
+    id: int
+    muscle_id: int
+    add_time: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class UserTerminologyCreate(BaseModel):
+    terminology_id: int
+
+
+class UserTerminologyRead(BaseModel):
+    id: int
+    terminology_id: int
+    add_time: datetime
+
+    model_config = {"from_attributes": True}

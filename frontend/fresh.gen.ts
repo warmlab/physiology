@@ -6,6 +6,8 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $about from "./routes/about.tsx";
 import * as $api_auth_google from "./routes/api/auth/google.ts";
+import * as $api_auth_login from "./routes/api/auth/login.ts";
+import * as $api_auth_register from "./routes/api/auth/register.ts";
 import * as $api_muscle_detail from "./routes/api/muscle/detail.ts";
 import * as $api_muscle_list from "./routes/api/muscle/list.ts";
 import * as $api_terminology_detail from "./routes/api/terminology/detail.ts";
@@ -33,6 +35,8 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/about.tsx": $about,
     "./routes/api/auth/google.ts": $api_auth_google,
+    "./routes/api/auth/login.ts": $api_auth_login,
+    "./routes/api/auth/register.ts": $api_auth_register,
     "./routes/api/muscle/detail.ts": $api_muscle_detail,
     "./routes/api/muscle/list.ts": $api_muscle_list,
     "./routes/api/terminology/detail.ts": $api_terminology_detail,

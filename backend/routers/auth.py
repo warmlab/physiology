@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 # from fastapi.security import OAuth2PasswordRequestForm
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import select
+
+from pydantic import ValidationError
 
 from ..database import get_db
 from ..models import User
@@ -12,9 +14,13 @@ from ..security import verify_password, hash_password, create_access_token, deco
 # from ..enums import UserRole
 from ..schemas import LoginRequest
 
+import logging
+
+
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)) -> User:
@@ -57,7 +63,7 @@ async def register(user: UserCreate, db: AsyncSession = Depends(get_db)):
     new_user = User(username=user.username,
                     email=user.email,
                     hashed_password=hashed_password,
-                    role='CUSTOMER')
+                    role='customer')
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
@@ -66,16 +72,45 @@ async def register(user: UserCreate, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == payload.email))
+async def login(request: Request, db: AsyncSession = Depends(get_db)):
+    try:
+        body = await request.json()
+        data = LoginRequest(**body)  # Pydantic 验证
+
+    except ValidationError as ve:
+        logger.warning("Login validation failed: %s", ve.errors())
+        raise HTTPException(status_code=422, detail=ve.errors())
+
+    result = await db.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
 
-    if not user or not verify_password(payload.password, user.hashed_password):
+    if not user or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token_data = {
         "sub": str(user.id),
-        "username": user.email,
+        "username": user.username,
+        "email": user.email,
+        "role": user.role.value if hasattr(user.role, "value") else user.role
+    }
+
+    return Token(access_token=create_access_token(token_data),
+                 user=UserRead.model_validate(user))
+
+
+async def login2(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
+    logger.info(f'Login payload received: {payload.email}')
+    result = await db.execute(select(User).where(User.email == payload.email))
+    user = result.scalar_one_or_none()
+
+    if not user or not verify_password(payload.password, user.hashed_password):
+        logger.warning(f'Invalid login credentials for {payload.email}')
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    token_data = {
+        "sub": str(user.id),
+        "username": user.username,
+        "email": user.email,
         "role": user.role.value if hasattr(user.role, "value") else user.role
     }
     token = create_access_token(token_data)
@@ -84,7 +119,6 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
 
 @router.post('/google')
 async def google_login(data: dict, db: AsyncSession = Depends(get_db)):
-    print("google", data)
     email = data.get("email")
     name = data.get("name", "")
     avatar = data.get("picture", "")

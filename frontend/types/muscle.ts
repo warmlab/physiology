@@ -7,6 +7,7 @@ export type Muscle = {
   innervation: string;
   action: string;
   palpation_key: string;
+  note: string,
   year: number;
   module: number;
   blank: boolean;

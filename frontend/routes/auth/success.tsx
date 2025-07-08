@@ -10,7 +10,7 @@ export default function SuccessPage() {
         <title>Login Successful</title>
       </Head>
       <div class="min-h-screen bg-green-50 flex items-center justify-center px-4">
-	<AuthSuccess />
+        <AuthSuccess />
       </div>
     </>
   );

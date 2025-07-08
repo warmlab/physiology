@@ -13,7 +13,7 @@ export function AuthLogin() {
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
-    const endpoint = mode === "login" ? "/auth/login_json" : "/auth/register";
+    const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -22,7 +22,20 @@ export function AuthLogin() {
 
     const data = await res.json();
     if (res.ok) {
-      setMessage("✅ Success");
+      //setMessage("✅ Success");
+      if (mode === "login") {
+    const query = new URLSearchParams({
+      token: data.access_token,
+      user: JSON.stringify(data.user),
+    });
+
+    globalThis.location.href = `/auth/success?${query.toString()}`;
+    return;
+  }
+
+  // If register mode
+  setMessage("✅ Registration successful! You can now login.");
+  setMode("login");
     } else {
       setMessage(`❌ ${data.detail || "Error"}`);
     }
